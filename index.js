@@ -3,7 +3,9 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var server = require('http').createServer(app);
-var io = require('socket.io')(server,{transports: ["websocket"]});
+var io = require('socket.io')(server, {
+  transports: ["websocket"]
+});
 var port = process.env.PORT || 3000;
 
 server.listen(port, () => {
@@ -46,6 +48,20 @@ io.on('connection', (socket) => {
       numUsers: numUsers
     });
   });
+
+  /*###*/
+  /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/
+
+  // When the client emits 'status', this listens and executes
+  socket.on('status', (data) => {
+    socket.broadcast.emit('status', {
+      username: socket.username,
+      status: data.status
+    });
+  });
+
+  /*###*/
+  /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/ /*###*/
 
   // when the client emits 'typing', we broadcast it to others
   socket.on('typing', () => {

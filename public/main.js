@@ -50,6 +50,26 @@ $(function() {
       socket.emit('add user', username);
     }
   }
+  
+  /*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*/
+
+  // Event handlers for status buttons
+  $('#busy-button').click(() => {
+    socket.emit('status', { status: 'busy' });
+  });
+
+  $('#available-button').click(() => {
+    socket.emit('status', { status: 'available' });
+  });
+
+  // Handle incoming status events
+  socket.on('status', (data) => {
+    const statusMessage = `${data.username} is ${data.status}`;
+    log(statusMessage);
+  });
+
+  /*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*//*###*/
+
 
   // Sends a chat message
   const sendMessage = () => {
@@ -278,5 +298,8 @@ $(function() {
   socket.on('reconnect_error', () => {
     log('attempt to reconnect has failed');
   });
+
+
+
 
 });
